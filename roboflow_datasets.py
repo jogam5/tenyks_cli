@@ -44,7 +44,7 @@ def box_from_yolo_to_coco(coordinates_list, img_width, img_height):
 import os
 import yaml
 
-def read_classes_from_yaml(dataset_path, destination_path):
+def read_classes_from_yaml(dataset_path):
     # Find the YAML file in the dataset folder
     yaml_file = None
     for file in os.listdir(dataset_path):
