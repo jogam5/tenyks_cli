@@ -44,7 +44,7 @@ def box_from_yolo_to_coco(coordinates_list, img_width, img_height):
 import os
 import yaml
 
-def read_classes_from_yaml(dataset_path):
+def read_classes_from_yaml(dataset_path, destination_path):
     # Find the YAML file in the dataset folder
     yaml_file = None
     for file in os.listdir(dataset_path):
@@ -61,6 +61,7 @@ def read_classes_from_yaml(dataset_path):
     with open(yaml_path, 'r') as file:
         data = yaml.safe_load(file)
         if 'names' in data:
+
             classes_dict = {}
             # Iterate over the list and assign indices as values
             for index, name in enumerate(data['names']):
@@ -70,6 +71,12 @@ def read_classes_from_yaml(dataset_path):
         else:
             raise KeyError("No 'names' key found in the YAML file.")
 
+def create_categories_file(names_dict, destination_folder):
+    data = {
+        "categories": list(names_dict.keys())
+    }
+    with open(f'{destination_folder}/class.json', 'w') as file:
+        json.dump(data, file)
 
 def get_annotations(images_path, anns_path, destination_folder, dataset_path):
     # Roboflow map of classes
@@ -77,6 +84,7 @@ def get_annotations(images_path, anns_path, destination_folder, dataset_path):
     #                'Misc': 3, 'Tram': 6, 'Person_sitting': 5, 'Van': 8}
     #labels_keys_ = {'Apple': 0}
     labels_keys_ = read_classes_from_yaml(dataset_path)
+    create_categories_file(labels_keys_, destination_folder)
 
     json_dict = {}
     json_dict['images'] = []
