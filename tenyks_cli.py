@@ -32,7 +32,9 @@ def upload_to_tenyks(dataset_key=None, image_folder_path=None, annotation_file_p
                 'tenyks model-predictions-upload': {'Enter dataset key:': f'{dataset_key}',
                                                     'Enter model key:': f'{model_name}',
                                                     'Enter prediction file path:': f'{prediction_file_path}',
-                                                    'Enter prediction file type (coco, vott_csv, yolo, deepstream, classification) [coco]:': prediction_type} }
+                                                    'Enter prediction file type (coco, vott_csv, yolo, deepstream, classification) [coco]:': f'{prediction_type}'
+                                                    }
+                }
                     
     for command, input_values in commands.items():
         output = automate_cli_input(command, input_values)
