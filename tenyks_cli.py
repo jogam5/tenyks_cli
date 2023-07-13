@@ -9,6 +9,7 @@ def automate_cli_input(cli_command, input_values):
     # Iterate over the expected input prompts
     for prompt, value in input_values.items():
         # Send the input value to the CLI subprocess
+        print(f'value: {value}')
         cli_process.stdin.write(f'{value}\n')
         cli_process.stdin.flush()
         time.sleep(1)
@@ -32,7 +33,7 @@ def upload_to_tenyks(dataset_key=None, image_folder_path=None, annotation_file_p
                 'tenyks model-predictions-upload': {'Enter dataset key:': f'{dataset_key}',
                                                     'Enter model key:': f'{model_name}',
                                                     'Enter prediction file path:': f'{prediction_file_path}',
-                                                    'Enter prediction file type (coco, vott_csv, yolo, deepstream, classification) [coco]:': f'{prediction_type}'
+                                                    'Enter prediction file type:': prediction_type
                                                     }
                 }
                     
