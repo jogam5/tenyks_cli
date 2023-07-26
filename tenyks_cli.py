@@ -9,18 +9,20 @@ def automate_cli_input(cli_command, input_values):
     # Iterate over the expected input prompts
     for prompt, value in input_values.items():
         # Send the input value to the CLI subprocess
-        print(f'value: {value}')
+        print(f'* prompt: {prompt}')
+        print(f'* value: {value}')
         cli_process.stdin.write(f'{value}\n')
         cli_process.stdin.flush()
-        time.sleep(1)
+        time.sleep(3)
 
     # Read the CLI output
     output = cli_process.communicate()[0]
+    print(f'CLI output {output}')
 
     # Return the CLI output
     return output
 
-def upload_to_tenyks(dataset_key=None, image_folder_path=None, annotation_file_path=None,
+def upload_dataset(dataset_key=None, image_folder_path=None, annotation_file_path=None,
                     prediction_file_path=None, class_path=None, model_name=None, prediction_type='coco'):
     commands = {'tenyks dataset-create': {'Enter dataset name:': f'{dataset_key}'},
                 'tenyks dataset-images-upload': {'Enter dataset key:': f'{dataset_key}',
@@ -28,16 +30,30 @@ def upload_to_tenyks(dataset_key=None, image_folder_path=None, annotation_file_p
                 'tenyks dataset-annotations-upload': {'Enter dataset key:': f'{dataset_key}',
                                                       'Enter annotation file path:': f'{annotation_file_path}'},
                 'tenyks dataset-class-names-upload': {'Enter dataset key:': f'{dataset_key}',
-                                                        'Enter path to class names:': f'{class_path}'},
-                'tenyks model-create': {'Enter model name:': f'{model_name}', 'Enter dataset key:': f'{dataset_key}'},
-                'tenyks model-predictions-upload': {'Enter dataset key:': f'{dataset_key}',
-                                                    'Enter model key:': f'{model_name}',
-                                                    'Enter prediction file path:': f'{prediction_file_path}',
-                                                    'Enter prediction file type:': prediction_type
-                                                    }
+                                                        'Enter path to class names:': f'{class_path}'}#,
+                #'tenyks model-create': {'Enter model name:': f'{model_name}', 'Enter dataset key:': f'{dataset_key}'},
+                #'tenyks model-predictions-upload': {'Enter dataset key:': f'{dataset_key}',
+                #                                    'Enter model key:': f'{model_name}',
+                #                                    'Enter prediction file path:': f'{prediction_file_path}',
+                #                                    'Enter prediction file type:': f'{prediction_type}'}
                 }
-                    
+
     for command, input_values in commands.items():
         output = automate_cli_input(command, input_values)
         print(output)
     print('Done')
+
+def upload_model(dataset_key=None, prediction_file_path=None, model_name=None,
+                 prediction_type='coco'):
+    commands = {'tenyks model-create': {'Enter model name:': f'{model_name}', 'Enter dataset key:': f'{dataset_key}'},
+                'tenyks model-predictions-upload': {'Enter dataset key:': f'{dataset_key}',
+                                                        'Enter model key:': f'{model_name}',
+                                                        'Enter prediction file path:': f'{prediction_file_path}',
+                                                        'Enter prediction file type:': f'{prediction_type}'}
+               }
+
+    for command, input_values in commands.items():
+        output = automate_cli_input(command, input_values)
+        print(output)
+    print('Done')
+

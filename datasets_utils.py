@@ -25,11 +25,14 @@ def get_common_files_n_dir(folder_paths):
             continue
 
         files = [f for f in os.listdir(folder_path) if f.endswith(file_extension)]
+        print(f'Length of files list {len(files)}')
 
         if common_files is None:
             common_files = set(files)
         else:
             common_files = common_files.intersection(files)
+
+        print(f'Length of common_files list {len(common_files)}')
 
     if common_files is None:
         common_files = set()
